@@ -1,0 +1,36 @@
+First error was getting the Panel to repaint with new textboxes, updated variables, etc, when the buttons were pushed. Worked on it for awhile, couldn't figure out why nothing like repaint or revalidate or anything was working. Finally said screw it and just had each action event method make a completely new panel - much more crowded and MESSY, I know, but it works and that's what I cared about! 
+
+Tons of null pointer errors with the different panels - trying to set things when I was in the wrong scope! Chased the null pointers down and figured out what needed to be instantiated where!
+
+Odd issue with the Updated panel - when I put an update button on it to allow the user to keep updating, it would update once more if the button was clicked again, but no more after that. Did debugging statements and tried for awhile to figure out what logical weirdness was causing that, but honestly I decided it wasn't worth the time and decided to just remove it. 
+
+Had an issue with pulling the information from and writing to the text boxes which then writes to the file - the file started pulling crazy stuff because I wanted to try to add "pounds" and "inches" to make the formatting look nicer, but obviously that broke the read-in/read-out of the file. Moved the formatting around to accommodate only having the variables in the text boxes. 
+
+The BIGGEST issue was trying to make the graph. I figured out how to pull just the weights from the record, after several issues with null pointers etc, and then I slooowly figured out how to turn those in 2D graphics points, but then I couldn't get the graph to draw correctly. It was getting late and I gave up and removed that option! 
+
+_____________________________________________________________________________________________
+New errors from homework 2!
+
+Null pointer exception with checkLogin method - realized components were created in both mainpanel and the user class, the method wasn't pointing to the correct objects - moved things around in the classes so that the objects are properly manipulated.
+Then had scope issue with the login components, so made sure the scope was set correctly...
+
+Couldn't get panel to show up, realized I had forgotten to actually add it. Shockingly, that fixed the issue. 
+
+Working on implementation oQf the file reading/writing, got a null pointer when trying to make file name possible for both mainpanel and weight classes. Need to pass the file name from the MainPanel into the Weight class, making an instance of the MainPanel in Weight didn't work - ended up making the Weight constructor pass in the file and do the scanning within Weight instead of in a separate method. 
+
+Null pointer exception when creating file for new account - had to just pull the username down into the method and make a new file with the correct path.
+
+Reading/writing to the file had to change - had issues with the file being overwritten improperly, realized I had only changed how it worked in one spot and not another. Fixed that, file writing was proper again!
+
+Got a null pointer issue in a few different spots with the file- realized I had changed from using the file variable to newFile and was causing issues, made sure I was using file everywhere and also instantiated it in the SelectionButton method so it had a file to refer to instead of null
+
+Making the Record objects to implement Comparable on - got it working pretty well (struggled with Timestamp stuff), but forgot to add the timestamp to the file writing, so got a nosuchelement exception when I had it in the driver constructor but wasn't writing to the file properly. Added it to the writing and it worked fine again! 
+Once again, realized I hadn't updated the writing method in the update method, so had to add the timestamp being written in that spot as well.
+
+When implementing comparable, couldn't get it to sort from newest to oldest as I wanted - had to cast timestamp to an instant (long) so I could customize the comparison logic more. 
+Then it wasn't ordering it right, so just changed the operand and voila! Newest to oldest. 
+_____________________________________________________________________________________________
+Homework 3! 
+
+
+
