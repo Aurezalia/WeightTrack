@@ -32,5 +32,6 @@ Then it wasn't ordering it right, so just changed the operand and voila! Newest 
 _____________________________________________________________________________________________
 Homework 3! 
 
+Started moving all of the methods for the different panels to being their own classes instead! But trying to add the login one to the Main got me a stack overflow error...
 
 

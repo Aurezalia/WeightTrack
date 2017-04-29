@@ -12,7 +12,7 @@ public class MainFrame {
 		// set up the close operation
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// create panel
-		Creation Panel = new MainPanel();
+		MainPanel Panel = new MainPanel();
 		// add panel
 		myFrame.getContentPane().add(Panel);
 		// pack

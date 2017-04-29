@@ -42,14 +42,15 @@ public abstract class Creation extends JPanel implements Impl {
 	Font font = new Font("Arial", 12, 24);
 	String Record, puname, ppaswd;
 	Weight driver;
-	Chart chart = new Chart();
+	//Chart chart = new Chart();
 	String nameText = "", heightText = "", weightText = "", goalText = "", newName = "", userName = "", password = "",
 			userText = "", passText = "", newHeight = "", newGoal = "", newWeight = "";
 	double heightNum, weightNum, goalNum;
 	ArrayList<Record> weightArray;
 
+
 	public Creation() {
-		super();
+		//super();
 	}
 
 	public Creation(LayoutManager layout) {
@@ -658,7 +659,7 @@ public abstract class Creation extends JPanel implements Impl {
 		newWeight = weight.getText();
 		newGoal = goal.getText();
 
-		JPanel graphPanel = new JPanel();
+/*		JPanel graphPanel = new JPanel();
 		graphPanel.setPreferredSize(new Dimension(400, 500));
 		// graphPanel.setBorder(new EmptyBorder(new Insets(40, 80, 80, 40)));
 		chart.drawGraph();
@@ -666,7 +667,7 @@ public abstract class Creation extends JPanel implements Impl {
 		for (int j = 0; j < chart.points.size(); j++) {
 			System.out.println(chart.points.get(j));
 		}
-
+*/
 		/*
 		 * int maxDataPoints = 12; for (int a = 0; a < maxDataPoints; a++) {
 		 * g2d.draw(new Line2D.Double(chart.p.getX(), chart.p.getY(), 3, 3));

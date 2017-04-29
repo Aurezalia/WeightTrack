@@ -14,7 +14,8 @@ public class Weight {
 	Impl main;
 
 	@SuppressWarnings("resource")
-	//when a Weight object is created (in the main class), this scans the File and creates objects of everything contained within it
+	// when a Weight object is created (in the main class), this scans the File
+	// and creates objects of everything contained within it
 	public Weight(File fileName) {
 		Scanner scanner = null;
 		try {
@@ -22,33 +23,28 @@ public class Weight {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		//scans the first line to pull the password
-		password = scanner.next().trim();
+		password = scanner.next().trim(); // scans the first line to pull the
+											// password
+		scanning(scanner); // starts recursive scanning function
 
-		//scans through the rest of the lines that hold the user records
-		//makes Record objects of each line
-		while (scanner.hasNext()) {
-			time = scanner.next().trim();
-			userHeight = Double.parseDouble(scanner.next().trim());
-			userWeight = Double.parseDouble(scanner.next().trim());
-			userGoal = Double.parseDouble(scanner.next().trim());
-			ts = Timestamp.valueOf(time);
-			weightArray.add(new Record(ts, userHeight, userWeight, userGoal));
-		}
 	}
 
-	/*
-	 * public void retrieveLines(File filename) throws IOException { Scanner
-	 * read = new Scanner(filename); read.useDelimiter(","); String name,
-	 * height, goal, password; double weight;
-	 * 
-	 * password = read.next(); while (read.hasNext()) { height = read.next();
-	 * weight = Double.parseDouble(read.next()); weightArray.add(weight); goal =
-	 * read.next(); } read.close(); for (int i = 0; i < weightArray.size(); i++)
-	 * { System.out.println(weightArray.get(i)); } }
-	 */
+	// scans through the rest of the lines that hold the user records
+	// makes Record objects of each line
+	public void scanning(Scanner inputScanner) {
+		if (!inputScanner.hasNext())
+			return;
 
-	//calculates BMI
+		time = inputScanner.next().trim();
+		userHeight = Double.parseDouble(inputScanner.next().trim());
+		userWeight = Double.parseDouble(inputScanner.next().trim());
+		userGoal = Double.parseDouble(inputScanner.next().trim());
+		ts = Timestamp.valueOf(time);
+		weightArray.add(new Record(ts, userHeight, userWeight, userGoal));
+		scanning(inputScanner);
+	}
+
+	// calculates BMI
 	public String getBMI() {
 		BMIweight = userWeight * 0.45;
 		BMIheight = userHeight * 0.025;
@@ -74,7 +70,7 @@ public class Weight {
 		return time;
 	}
 
-	//converts the Double height to a string
+	// converts the Double height to a string
 	public String getHeightString() {
 		String heightString = String.format("%.1f", userHeight);
 		return heightString;
@@ -88,7 +84,7 @@ public class Weight {
 		return userWeight;
 	}
 
-	//converts the weight double to a string
+	// converts the weight double to a string
 	public String getWeightString() {
 		String weightString = String.format("%.1f", userWeight);
 		return weightString;
@@ -106,13 +102,14 @@ public class Weight {
 		this.userGoal = userGoal;
 	}
 
-	//converts goal Double to a string
+	// converts goal Double to a string
 	public String getGoalString() {
 		String goalString = String.format("%.1f", userGoal);
 		return goalString;
 	}
-	
-	//calculates how much left to goal and then converts it to a string to be put in GUI
+
+	// calculates how much left to goal and then converts it to a string to be
+	// put in GUI
 	public String getGoal(Double userWeight) {
 		this.userWeight = userWeight;
 		Double goalLeft = userWeight - userGoal;
