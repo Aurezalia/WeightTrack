@@ -29,7 +29,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public abstract class Creation extends JPanel implements Impl {
+public abstract class Creation extends JPanel/* implements Impl */{
 
 	private JLabel nameLabel, change, heightLabel, weightLabel, goalLabel, BMILabel, poundsLabel, topLabel, userLabel,
 			passLabel;
@@ -113,7 +113,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#checkLogin()
 	 */
-	@Override
+	//@Override
 	public void checkLogin() {
 
 		puname = txuser.getText();
@@ -153,7 +153,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#loginSuccess()
 	 */
-	@Override
+	//@Override
 	public void loginSuccess() {
 		welcome = new JPanel();
 		welcome.setLayout(new BoxLayout(welcome, BoxLayout.Y_AXIS));
@@ -221,7 +221,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#createAccount()
 	 */
-	@Override
+	//@Override
 	public void createAccount() {
 		account = new JPanel();
 		account.setLayout(new BoxLayout(account, BoxLayout.Y_AXIS));
@@ -295,7 +295,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#selectionButtonPressed()
 	 */
-	@Override
+	//@Override
 	public void selectionButtonPressed() {
 		userText = userField.getText();
 		passText = passField.getText();
@@ -394,7 +394,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#updateButtonPressed()
 	 */
-	@Override
+	//@Override
 	public void updateButtonPressed() {
 		newName = name.getText();
 		newWeight = weight.getText();
@@ -483,7 +483,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#backUpdate()
 	 */
-	@Override
+	//@Override
 	public void backUpdate() {
 		back = new JPanel();
 		back.setLayout(new BoxLayout(back, BoxLayout.Y_AXIS));
@@ -538,7 +538,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * @see mainPackage.Impl#calculatePressed()
 	 */
 
-	@Override
+	//@Override
 	public void calculatePressed() {
 		newName = name.getText();
 		newHeight = height.getText();
@@ -650,7 +650,7 @@ public abstract class Creation extends JPanel implements Impl {
 	 * 
 	 * @see mainPackage.Impl#chartPressed()
 	 */
-	@Override
+	//@Override
 	
 	//this still doesn't do anything. Eventually!
 	public void chartPressed() {

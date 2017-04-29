@@ -9,19 +9,18 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class Welcome extends MainPanel {
-	public Welcome(JLabel recordLabel, JLabel nameLabel, JTextField nameText, JLabel heightLabel, JTextField heightText, JLabel weightLabel, JTextField weightText, 
-			JLabel goalLabel, JTextField goalText, JButton update, JButton calculate) {
-		
+public class Welcome extends Creation {
+	public Welcome(JLabel recordLabel, JLabel nameLabel, JTextField nameText, JLabel heightLabel, JTextField heightText,
+			JLabel weightLabel, JTextField weightText, JLabel goalLabel, JTextField goalText, JButton update,
+			JButton calculate) {
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(400, 500));
 		setBorder(new EmptyBorder(new Insets(40, 100, 100, 100)));
-		
+
 		recordLabel = new JLabel("Your last weigh in: ");
 		add(recordLabel);
 		add(Box.createRigidArea(new Dimension(0, 50)));
@@ -56,22 +55,21 @@ public class Welcome extends MainPanel {
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//updateButtonPressed();
-				//welcome.setVisible(false);
+				// updateButtonPressed();
+				// welcome.setVisible(false);
 			}
 
 		});
-
 
 		calculate = new JButton("Calculate BMI");
 		add(calculate);
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		calculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//calculatePressed();
-				//welcome.setVisible(false);
+				// calculatePressed();
+				// welcome.setVisible(false);
 			}
 
 		});
 	}
-	}
+}

@@ -67,9 +67,8 @@ public class Login extends Creation {
 		});
 	}
 	
-
 	
-	@Override
+	//@Override
 	public void checkLogin() {
 
 		puname = userText.getText();
@@ -92,6 +91,7 @@ public class Login extends Creation {
 			if (ppaswd.equals(password)) {
 				driver = new Weight(file);
 				weightArray = driver.weightArray;
+				//Creation welcome = new Welcome();
 				//loginSuccess();
 				//panel.setVisible(false);
 			}
