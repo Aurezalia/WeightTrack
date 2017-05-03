@@ -29,7 +29,7 @@ public class myLinkedList<T> implements Iterable<T> {
 	    }
 
 	    public boolean remove(T item) {
-	        if (isEmpty()) { throw new IllegalStateException("Cannot remove() from and empty list."); }
+	        if (isEmpty()) { throw new IllegalStateException("Cannot remove() from an empty list."); }
 	        boolean result = false;
 	        Node prev = first;
 	        Node curr = first;

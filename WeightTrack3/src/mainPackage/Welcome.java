@@ -13,9 +13,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class Welcome extends Creation {
-	public Welcome(JLabel recordLabel, JLabel nameLabel, JTextField nameText, JLabel heightLabel, JTextField heightText,
+	JLabel recordLabel, nameLabel, heightLabel, weightLabel, goalLabel;
+	JTextField nameText, heightText, weightText, goalText;
+	JButton update, calculate;
+	
+	public Welcome(/*JLabel recordLabel, JLabel nameLabel, JTextField nameText, JLabel heightLabel, JTextField heightText,
 			JLabel weightLabel, JTextField weightText, JLabel goalLabel, JTextField goalText, JButton update,
-			JButton calculate) {
+			JButton calculate*/) {
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setPreferredSize(new Dimension(400, 500));
@@ -54,6 +58,8 @@ public class Welcome extends Creation {
 		add(update);
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		update.addActionListener(new ActionListener() {
+			
+			
 			public void actionPerformed(ActionEvent e) {
 				// updateButtonPressed();
 				// welcome.setVisible(false);

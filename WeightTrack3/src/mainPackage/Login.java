@@ -20,16 +20,16 @@ import javax.swing.border.EmptyBorder;
 public class Login extends Creation {
 	//String puname, ppaswd;
 	//String password = "";
-	File file;
+	//File file;
 	JLabel user, password;
 	JTextField userText;
 	JPasswordField passText;
-	JButton login, create;
+	JButton blogin, create;
 
 	public Login(/*JLabel user, JLabel password, JTextField userText, JPasswordField passText, JButton login, JButton create*/) {
 		//super(user, password, userText, passText, login, create);
 		//makeLogin();
-		login = new JButton("Login");
+		blogin = new JButton("Login");
 		create = new JButton("Make an account");
 		userText = new JTextField(15);
 		passText = new JPasswordField(15);
@@ -45,16 +45,16 @@ public class Login extends Creation {
 		password.setBounds(100, 70, 200, 20);
 		userText.setBounds(100, 40, 200, 20);
 		passText.setBounds(100, 90, 200, 20);
-		login.setBounds(140, 130, 120, 20);
+		blogin.setBounds(140, 130, 120, 20);
 		create.setBounds(100, 165, 200, 20);
 
 		add(create);
-		add(login);
+		add(blogin);
 		add(userText);
 		add(passText);
 		add(user);
 		add(password);
-		login.addActionListener(new ActionListener() {
+		blogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				checkLogin();
 			}
@@ -91,7 +91,11 @@ public class Login extends Creation {
 			if (ppaswd.equals(password)) {
 				driver = new Weight(file);
 				weightArray = driver.weightArray;
-				//Creation welcome = new Welcome();
+				Creation welcome = new Welcome();
+				MainPanel.login.setVisible(false);
+				//MainPanel.welcome.setVisible(true);
+				welcome.setFocusable(true);
+				
 				//loginSuccess();
 				//panel.setVisible(false);
 			}

@@ -20,6 +20,9 @@ public class MainPanel extends JPanel {
 	JTextField txuser;
 	JPasswordField pass;
 	JLabel userLabel, passLabel;
+	static Creation login = new Login(/*userLabel, passLabel, txuser, pass, blogin, baccount*/);
+	//static Creation welcome = new Welcome();
+
 
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +32,6 @@ public class MainPanel extends JPanel {
 	}
 
 	public void initUI(){
-		Creation login = new Login(/*userLabel, passLabel, txuser, pass, blogin, baccount*/);
 		add(login);
 	}
 }

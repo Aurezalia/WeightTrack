@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,7 +30,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public abstract class Creation extends JPanel/* implements Impl */{
+public abstract class Creation extends JPanel implements Impl {
 
 	private JLabel nameLabel, change, heightLabel, weightLabel, goalLabel, BMILabel, poundsLabel, topLabel, userLabel,
 			passLabel;
@@ -41,17 +42,19 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	File file;
 	Font font = new Font("Arial", 12, 24);
 	String Record, puname, ppaswd;
-	static Weight driver;
-	//Chart chart = new Chart();
+	Weight driver;
+	//Creation chart = new Chart();
 	String nameText = "", heightText = "", weightText = "", goalText = "", newName = "", userName = "", password = "",
 			userText = "", passText = "", newHeight = "", newGoal = "", newWeight = "";
 	double heightNum, weightNum, goalNum;
-	ArrayList<Record> weightArray;
+	newLinkedList<Record> weightStack;
+	ArrayList<Point2D.Double> points = new ArrayList<Point2D.Double>();
+
+
 
 
 	public Creation() {
-		//super();
-
+		super();
 	}
 
 	public Creation(LayoutManager layout) {
@@ -114,7 +117,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#checkLogin()
 	 */
-	//@Override
+	@Override
 	public void checkLogin() {
 
 		puname = txuser.getText();
@@ -136,7 +139,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 
 			if (ppaswd.equals(password)) {
 				driver = new Weight(file);
-				weightArray = driver.weightArray;
+				weightStack = driver.weightStack;
 				loginSuccess();
 				panel.setVisible(false);
 			}
@@ -154,7 +157,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#loginSuccess()
 	 */
-	//@Override
+	@Override
 	public void loginSuccess() {
 		welcome = new JPanel();
 		welcome.setLayout(new BoxLayout(welcome, BoxLayout.Y_AXIS));
@@ -222,7 +225,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#createAccount()
 	 */
-	//@Override
+	@Override
 	public void createAccount() {
 		account = new JPanel();
 		account.setLayout(new BoxLayout(account, BoxLayout.Y_AXIS));
@@ -296,7 +299,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#selectionButtonPressed()
 	 */
-	//@Override
+	@Override
 	public void selectionButtonPressed() {
 		userText = userField.getText();
 		passText = passField.getText();
@@ -325,9 +328,10 @@ public abstract class Creation extends JPanel/* implements Impl */{
 			bw.close();
 			//makes Weight object of that file
 			driver = new Weight(file);
-			weightArray = driver.weightArray;
-			//adds the new Record to the Array
-			weightArray.add(new Record(timestamp, heightNum, weightNum, goalNum));
+			weightStack = driver.weightStack;
+			//adds the new Record to the Stack
+			weightStack.push(new Record(timestamp, heightNum, weightNum, goalNum));
+
 		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
@@ -371,6 +375,17 @@ public abstract class Creation extends JPanel/* implements Impl */{
 		updated.add(Box.createRigidArea(new Dimension(0, 25)));
 		add(updated);
 
+		/*
+		 * update = new JButton("Update"); updated.add(update);
+		 * updated.add(Box.createRigidArea(new Dimension(0, 5)));
+		 * update.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { try { updateButtonPressed();
+		 * updated.setVisible(false); updated.setVisible(true); } catch
+		 * (IOException e1) { e1.printStackTrace(); } }
+		 * 
+		 * });
+		 */
+
 		add(updated);
 
 		calculate = new JButton("See stats");
@@ -395,19 +410,19 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#updateButtonPressed()
 	 */
-	//@Override
+	@Override
 	public void updateButtonPressed() {
 		newName = name.getText();
 		newWeight = weight.getText();
 		newHeight = height.getText();
 		newGoal = goal.getText();
 
-		//creates new Record object of user input and adds it to array
+		//creates new Record object of user input and adds it to linked list
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		heightNum = Double.parseDouble(newHeight);
 		weightNum = Double.parseDouble(newWeight);
 		goalNum = Double.parseDouble(newGoal);
-		weightArray.add(new Record(timestamp, heightNum, weightNum, goalNum));
+		weightStack.push(new Record(timestamp, heightNum, weightNum, goalNum));
 
 		//writes that user input (the Record) to file
 		FileWriter fw;
@@ -484,7 +499,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * 
 	 * @see mainPackage.Impl#backUpdate()
 	 */
-	//@Override
+	@Override
 	public void backUpdate() {
 		back = new JPanel();
 		back.setLayout(new BoxLayout(back, BoxLayout.Y_AXIS));
@@ -539,7 +554,7 @@ public abstract class Creation extends JPanel/* implements Impl */{
 	 * @see mainPackage.Impl#calculatePressed()
 	 */
 
-	//@Override
+	@Override
 	public void calculatePressed() {
 		newName = name.getText();
 		newHeight = height.getText();
@@ -550,9 +565,9 @@ public abstract class Creation extends JPanel/* implements Impl */{
 		weightNum = Double.parseDouble(newWeight);
 		goalNum = Double.parseDouble(newGoal);
 
-		//sorts the Arraylist of the user records based on the CompareTo method in Record
+/*		//sorts the Arraylist of the user records based on the CompareTo method in Record
 		//(makes it newest to oldest instead of oldest to newest)
-		Collections.sort(weightArray);
+		Collections.sort(weightStack);*/
 
 		calculated = new JPanel();
 		calculated.setLayout(new BoxLayout(calculated, BoxLayout.Y_AXIS));
@@ -598,10 +613,13 @@ public abstract class Creation extends JPanel/* implements Impl */{
 
 		//checks to make sure user has enough records (need at least two entries to be able to compare!) before
 		//calculating and displaying the change in the last two weigh-ins
-		if (weightArray.size() > 2) {
+		if (weightStack.size() > 2) {
 			change = new JLabel("Since your last weigh-in: ");
 			changeArea = new JTextArea();
-			double delta = (weightArray.get(1).userWeight - weightArray.get(0).userWeight);
+			Record first = (mainPackage.Record) weightStack.get(1);
+			Record second = (mainPackage.Record) weightStack.get(2);
+
+			double delta = (second.userWeight - first.userWeight);
 			if (delta > 0) {
 				changeArea.setText("You have lost " + delta + " pounds!");
 			} else {
@@ -646,13 +664,19 @@ public abstract class Creation extends JPanel/* implements Impl */{
 
 	}
 
+	public void drawGraph() {
+		JPanel graph = new JPanel();
+		repaint();
+
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see mainPackage.Impl#chartPressed()
 	 */
-	//@Override
-	
+	@SuppressWarnings("unchecked")
+	@Override
 	//this still doesn't do anything. Eventually!
 	public void chartPressed() {
 		newName = name.getText();
@@ -660,15 +684,21 @@ public abstract class Creation extends JPanel/* implements Impl */{
 		newWeight = weight.getText();
 		newGoal = goal.getText();
 
-/*		JPanel graphPanel = new JPanel();
+		Collections.sort(weightStack);
+
+		
+		Chart graphPanel = new Chart(weightStack);
 		graphPanel.setPreferredSize(new Dimension(400, 500));
+		add(graphPanel);
+		graphPanel.setVisible(true);
+		// TODO:  Celebrate when this code is called and draws a beautiful graph.
 		// graphPanel.setBorder(new EmptyBorder(new Insets(40, 80, 80, 40)));
-		chart.drawGraph();
+		/*chart.drawGraph();
 		graphPanel.add(chart);
 		for (int j = 0; j < chart.points.size(); j++) {
 			System.out.println(chart.points.get(j));
-		}
-*/
+		}*/
+
 		/*
 		 * int maxDataPoints = 12; for (int a = 0; a < maxDataPoints; a++) {
 		 * g2d.draw(new Line2D.Double(chart.p.getX(), chart.p.getY(), 3, 3));
