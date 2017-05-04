@@ -17,8 +17,4 @@ public class LinkedListStack<T> extends newLinkedList<T>{
 		return isEmpty();
 	}
 
-	@Override
-	public String toString() {
-		return toString();
-	}
 }

@@ -30,3 +30,24 @@ Once again, realized I hadn't updated the writing method in the update method, s
 When implementing comparable, couldn't get it to sort from newest to oldest as I wanted - had to cast timestamp to an instant (long) so I could customize the comparison logic more. 
 Then it wasn't ordering it right, so just changed the operand and voila! Newest to oldest. 
 
+_____________________________________________________________________________________________
+Homework 3! 
+
+Started moving all of the methods for the different panels to being their own classes instead! But trying to add the login one to the Main got me a stack overflow error... turns out that making the other panels all children of the MainPanel AND trying to add them to the mainpanel won't work. Duh. Realized this isn't a requirement anyway? Reverted, maybe will come back to it later...
+
+Made linkedlist class, converted ArrayList to linkedlist and tested it... got null pointer where delta was being calculated. Realized I was using the 0 indice when it starts at 1! Changed those indices to 1 and 2 instead of 0 and 1 as it was for the arraylist and it started working again.
+
+Went back to method structure to just get requirements implemented first. Had stack written in the linkedlist class, making a linkedlist object and then doing stuff to it, but couldn't figure out how to call it properly... made it its own class and implemented polymorphism instead!
+
+trying to use my comparable method to sort the linkedlist kept telling me it was not applicable... had to associate my custom linkedlist class with java Lists for it to be able to use comparable & the compareTo method I had written
+
+Trying to do searching on linkedList... binary search wasn't quite working right? Missing records or something. Switched to linear search.
+Linear search was only finding one object and quitting, had to change it so it would pull ALL matching objects. 
+
+Dropdown box had crazy extra empty spaces because the array size was set to twelve for all the months - made a temp ArrayList, then when I knew how many months the user had records for, make an array of that size. No more too-big array!
+
+Of course, then I had index issues because before each month in the array was equal to the index, now the index was completely different... iterated through arraylist backwards to add strings to array in proper order, then just did a comparison for the months to find which one was the proper yyyyMM it should be looking for
+
+Once that was working, new dropdown box and button, etc were showing up super weird in the layout. Put them in their own method to set up structure more rigidly, then just added that method to the other panels. Voila! 
+
+regular expressions weren't working quite right. Changed what it was checking for! 

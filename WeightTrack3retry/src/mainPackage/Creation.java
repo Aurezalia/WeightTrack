@@ -13,11 +13,14 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -29,6 +32,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.PlainDocument;
 
 public abstract class Creation extends JPanel implements Impl {
 
@@ -43,15 +47,15 @@ public abstract class Creation extends JPanel implements Impl {
 	Font font = new Font("Arial", 12, 24);
 	String Record, puname, ppaswd;
 	Weight driver;
-	//Creation chart = new Chart();
 	String nameText = "", heightText = "", weightText = "", goalText = "", newName = "", userName = "", password = "",
 			userText = "", passText = "", newHeight = "", newGoal = "", newWeight = "";
 	double heightNum, weightNum, goalNum;
 	newLinkedList<Record> weightStack;
 	ArrayList<Point2D.Double> points = new ArrayList<Point2D.Double>();
-
-
-
+	Archive dropdown = null;
+	JButton fetchButton;
+	JTextArea oldRecords;
+	JLabel seeOld;
 
 	public Creation() {
 		super();
@@ -70,7 +74,7 @@ public abstract class Creation extends JPanel implements Impl {
 	}
 
 	// sets up the initial panel for logging in
-	protected void initUI()  {
+	protected void initUI() {
 		blogin = new JButton("Login");
 		baccount = new JButton("Make an account");
 		txuser = new JTextField(15);
@@ -131,7 +135,7 @@ public abstract class Creation extends JPanel implements Impl {
 		}
 
 		if (!file.exists()) {
-			JOptionPane.showMessageDialog(null, "Username does not exist. Please make an account.");
+			JOptionPane.showMessageDialog(panel, "Username does not exist. Please make an account.");
 		}
 
 		else {
@@ -145,7 +149,7 @@ public abstract class Creation extends JPanel implements Impl {
 			}
 
 			else {
-				JOptionPane.showMessageDialog(null, "Incorrect username/password");
+				JOptionPane.showMessageDialog(panel, "Incorrect username/password");
 				pass.setText("");
 				pass.requestFocus();
 			}
@@ -198,8 +202,10 @@ public abstract class Creation extends JPanel implements Impl {
 		welcome.add(Box.createRigidArea(new Dimension(0, 5)));
 		update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateButtonPressed();
-				welcome.setVisible(false);
+				if (checkNumInput(height, weight, goal) == false) {
+					updateButtonPressed();
+					welcome.setVisible(false);
+				}
 			}
 
 		});
@@ -211,13 +217,16 @@ public abstract class Creation extends JPanel implements Impl {
 		welcome.add(Box.createRigidArea(new Dimension(0, 5)));
 		calculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				calculatePressed();
-				welcome.setVisible(false);
+				if (checkNumInput(height, weight, goal) == false) {
+					calculatePressed();
+					welcome.setVisible(false);
+				}
 			}
 
 		});
 
 		add(welcome);
+		addOlder(welcome);
 	}
 
 	/*
@@ -275,23 +284,67 @@ public abstract class Creation extends JPanel implements Impl {
 
 		submit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String fileName = userField.getText();
-				file = new File("./src/mainPackage/" + fileName);
-				if (!file.exists()) {
-					account.setVisible(false);
-					puname = name.getText();
-					selectionButtonPressed();
-				}
+				if (checkNumInput(height, weight, goal) == false
+						&& checkWordInput(userField, passField, name) == false) {
+					String fileName = userField.getText();
+					file = new File("./src/mainPackage/" + fileName);
+					if (!file.exists()) {
+						account.setVisible(false);
+						puname = name.getText();
+						selectionButtonPressed();
+					}
 
-				else {
-					JOptionPane.showMessageDialog(null, "Account already exists, please choose another username.");
-					userField.setText("");
-					txuser.requestFocus();
+					else {
+						JOptionPane.showMessageDialog(null, "Account already exists, please choose another username.");
+						userField.setText("");
+						txuser.requestFocus();
+					}
 				}
 			}
 		});
 
 		add(account);
+
+	}
+
+	//checks user input in text boxes
+	public boolean checkNumInput(JTextField height, JTextField weight, JTextField goal) {
+		boolean broke = false;
+		if (weight.getText().equals("") || !(Pattern.matches("\\d\\d\\d", weight.getText()))) {
+			JOptionPane.showMessageDialog(account, "Invalid weight");
+			weight.setFocusable(true);
+			broke = true;
+		} else if (height.getText().equals("") || !(Pattern.matches("\\d\\d", height.getText()))) {
+			JOptionPane.showMessageDialog(account, "Invalid height");
+			height.setFocusable(true);
+			broke = true;
+		} else if (goal.getText().equals("") || !(Pattern.matches("\\d\\d\\d", goal.getText()))) {
+			JOptionPane.showMessageDialog(account, "Invalid goal. Please be healthy!");
+			goal.setFocusable(true);
+			broke = true;
+		}
+		return broke;
+	}
+
+	//checks user input in the other text boxes for making an account
+	public boolean checkWordInput(JTextField userField, JTextField passField, JTextField name) {
+		boolean broke = false;
+		if (userField.getText().equals("") || !(Pattern.matches("^[a-zA-Z]+$$", userField.getText()))) {
+			JOptionPane.showMessageDialog(account, "Username has invalid characters! Only A-Z allowed.");
+			userField.setFocusable(true);
+			broke = true;
+
+		} else if (passField.getText().equals("") || !(Pattern.matches("^[a-zA-Z]+$$", passField.getText()))) {
+			JOptionPane.showMessageDialog(account, "Password has invalid characters! Only A-Z allowed.");
+			passField.setFocusable(true);
+			broke = true;
+
+		} else if (name.getText().equals("") || !(Pattern.matches("^[a-zA-Z]+$$", name.getText()))) {
+			JOptionPane.showMessageDialog(account, "Name has invalid characters! Only A-Z allowed.");
+			name.setFocusable(true);
+			broke = true;
+		}
+		return broke;
 	}
 
 	/*
@@ -307,29 +360,29 @@ public abstract class Creation extends JPanel implements Impl {
 		heightText = height.getText();
 		weightText = weight.getText();
 		goalText = goal.getText();
-		
+
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		heightNum = Double.parseDouble(heightText);
 		weightNum = Double.parseDouble(weightText);
 		goalNum = Double.parseDouble(goalText);
 
-		//writes information to file
+		// writes information to file
 		String fileName = userText;
 		file = new File("./src/mainPackage/" + fileName);
 		try {
 			file.createNewFile();
 			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
 			BufferedWriter bw = new BufferedWriter(fw);
-			//writes password to first line
+			// writes password to first line
 			bw.write(passText + ",");
 			bw.newLine();
-			//then each Record will go on subsequent lines
+			// then each Record will go on subsequent lines
 			bw.write(timestamp + "," + heightText + "," + weightText + "," + goalText + ",");
 			bw.close();
-			//makes Weight object of that file
+			// makes Weight object of that file
 			driver = new Weight(file);
 			weightStack = driver.weightStack;
-			//adds the new Record to the Stack
+			// adds the new Record to the Stack
 			weightStack.push(new Record(timestamp, heightNum, weightNum, goalNum));
 
 		} catch (IOException e2) {
@@ -341,7 +394,7 @@ public abstract class Creation extends JPanel implements Impl {
 		updated.setPreferredSize(new Dimension(400, 500));
 		updated.setBorder(new EmptyBorder(new Insets(40, 100, 100, 100)));
 
-		topLabel = new JLabel("Your info has been logged! ");
+		topLabel = new JLabel("Info Logged!");
 		updated.add(topLabel);
 		updated.add(Box.createRigidArea(new Dimension(0, 50)));
 
@@ -375,17 +428,6 @@ public abstract class Creation extends JPanel implements Impl {
 		updated.add(Box.createRigidArea(new Dimension(0, 25)));
 		add(updated);
 
-		/*
-		 * update = new JButton("Update"); updated.add(update);
-		 * updated.add(Box.createRigidArea(new Dimension(0, 5)));
-		 * update.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent e) { try { updateButtonPressed();
-		 * updated.setVisible(false); updated.setVisible(true); } catch
-		 * (IOException e1) { e1.printStackTrace(); } }
-		 * 
-		 * });
-		 */
-
 		add(updated);
 
 		calculate = new JButton("See stats");
@@ -393,8 +435,10 @@ public abstract class Creation extends JPanel implements Impl {
 		updated.add(Box.createRigidArea(new Dimension(0, 5)));
 		calculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				calculatePressed();
-				updated.setVisible(false);
+				if (checkNumInput(height, weight, goal) == false) {
+					calculatePressed();
+					updated.setVisible(false);
+				}
 			}
 
 		});
@@ -402,7 +446,7 @@ public abstract class Creation extends JPanel implements Impl {
 		add(updated);
 		panel.setVisible(false);
 		updated.setVisible(true);
-
+		addOlder(updated);
 	}
 
 	/*
@@ -417,14 +461,14 @@ public abstract class Creation extends JPanel implements Impl {
 		newHeight = height.getText();
 		newGoal = goal.getText();
 
-		//creates new Record object of user input and adds it to linked list
+		// creates new Record object of user input and adds it to linked list
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		heightNum = Double.parseDouble(newHeight);
 		weightNum = Double.parseDouble(newWeight);
 		goalNum = Double.parseDouble(newGoal);
 		weightStack.push(new Record(timestamp, heightNum, weightNum, goalNum));
 
-		//writes that user input (the Record) to file
+		// writes that user input (the Record) to file
 		FileWriter fw;
 		try {
 			fw = new FileWriter(file.getAbsoluteFile(), true);
@@ -482,8 +526,11 @@ public abstract class Creation extends JPanel implements Impl {
 		updated.add(Box.createRigidArea(new Dimension(0, 5)));
 		calculate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				calculatePressed();
-				updated.setVisible(false);
+				if (checkNumInput(height, weight, goal) == false) {
+
+					calculatePressed();
+					updated.setVisible(false);
+				}
 			}
 
 		});
@@ -492,6 +539,8 @@ public abstract class Creation extends JPanel implements Impl {
 
 		panel.setVisible(false);
 		updated.setVisible(true);
+		addOlder(updated);
+
 	}
 
 	/*
@@ -540,12 +589,16 @@ public abstract class Creation extends JPanel implements Impl {
 		back.add(Box.createRigidArea(new Dimension(0, 5)));
 		update.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateButtonPressed();
-				back.setVisible(false);
+				if (checkNumInput(height, weight, goal) == false) {
+
+					updateButtonPressed();
+					back.setVisible(false);
+				}
 			}
 
 		});
 		add(back);
+		addOlder(back);
 	}
 
 	/*
@@ -560,14 +613,10 @@ public abstract class Creation extends JPanel implements Impl {
 		newHeight = height.getText();
 		newWeight = weight.getText();
 		newGoal = goal.getText();
-		
+
 		heightNum = Double.parseDouble(newHeight);
 		weightNum = Double.parseDouble(newWeight);
 		goalNum = Double.parseDouble(newGoal);
-
-/*		//sorts the Arraylist of the user records based on the CompareTo method in Record
-		//(makes it newest to oldest instead of oldest to newest)
-		Collections.sort(weightStack);*/
 
 		calculated = new JPanel();
 		calculated.setLayout(new BoxLayout(calculated, BoxLayout.Y_AXIS));
@@ -611,8 +660,9 @@ public abstract class Creation extends JPanel implements Impl {
 		calculated.add(goalArea);
 		calculated.add(Box.createRigidArea(new Dimension(0, 25)));
 
-		//checks to make sure user has enough records (need at least two entries to be able to compare!) before
-		//calculating and displaying the change in the last two weigh-ins
+		// checks to make sure user has enough records (need at least two
+		// entries to be able to compare!) before
+		// calculating and displaying the change in the last two weigh-ins
 		if (weightStack.size() > 2) {
 			change = new JLabel("Since your last weigh-in: ");
 			changeArea = new JTextArea();
@@ -647,63 +697,46 @@ public abstract class Creation extends JPanel implements Impl {
 
 		});
 
-		/*
-		 * graph = new JButton("Show graph"); calculated.add(graph);
-		 * calculated.add(Box.createRigidArea(new Dimension(0, 5)));
-		 * graph.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent e) { try { chartPressed();
-		 * calculated.setVisible(false);
-		 * 
-		 * } catch (IOException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); } }
-		 * 
-		 * });
-		 */
 		panel.setVisible(false);
 		calculated.setVisible(true);
+		addOlder(calculated);
 
 	}
 
-	public void drawGraph() {
-		JPanel graph = new JPanel();
-		repaint();
+	//sets up the panel for looking at older records
+	public void addOlder(JPanel current) {
+		JPanel olderSet = new JPanel();
+		olderSet.setLayout(new BoxLayout(olderSet, BoxLayout.Y_AXIS));
+		olderSet.setBorder(new EmptyBorder(new Insets(100, 50, 50, 50)));
 
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see mainPackage.Impl#chartPressed()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	//this still doesn't do anything. Eventually!
-	public void chartPressed() {
-		newName = name.getText();
-		newHeight = height.getText();
-		newWeight = weight.getText();
-		newGoal = goal.getText();
+		seeOld = new JLabel();
+		seeOld.setText("See Older Records");
+		current.add(seeOld);
 
-		Collections.sort(weightStack);
-
+		JPanel box = new JPanel();
+		box.setLayout(new BoxLayout(box, BoxLayout.X_AXIS));
+		dropdown = new Archive(weightStack);
+		box.add(dropdown.getDropdown());
+		fetchButton = new JButton("Go");
+		box.add(fetchButton);
+		current.add(box);
 		
-		Chart graphPanel = new Chart(weightStack);
-		graphPanel.setPreferredSize(new Dimension(400, 500));
-		add(graphPanel);
-		graphPanel.setVisible(true);
-		// TODO:  Celebrate when this code is called and draws a beautiful graph.
-		// graphPanel.setBorder(new EmptyBorder(new Insets(40, 80, 80, 40)));
-		/*chart.drawGraph();
-		graphPanel.add(chart);
-		for (int j = 0; j < chart.points.size(); j++) {
-			System.out.println(chart.points.get(j));
-		}*/
+		oldRecords = new JTextArea();
 
-		/*
-		 * int maxDataPoints = 12; for (int a = 0; a < maxDataPoints; a++) {
-		 * g2d.draw(new Line2D.Double(chart.p.getX(), chart.p.getY(), 3, 3));
-		 */
-
+		ActionListener action1 = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Record> returned = new ArrayList<Record>();
+				returned = dropdown.findRecords(weightStack);
+				String output = "";
+				oldRecords.setText(output);
+				for (int i = 0; i < returned.size(); i++) {
+					output = output + returned.get(i) + "\n";
+				}
+				JOptionPane.showMessageDialog(current, output);
+			}
+		};
+		fetchButton.addActionListener(action1);
 	}
 
+	
 }

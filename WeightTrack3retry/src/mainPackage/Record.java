@@ -1,11 +1,14 @@
 package mainPackage;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Record implements Comparable<Record> {
 	int year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour;
 	double userHeight, userWeight, userGoal;
 	Timestamp timestamp;
+	SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+
 
 	public Record(Timestamp timestamp, double userHeight, double userWeight, double userGoal) {
 		this.timestamp = timestamp;
@@ -19,7 +22,7 @@ public class Record implements Comparable<Record> {
 	}
 
 	public String toString(){
-		return timestamp + "";	
+		return "Date: " + format.format(timestamp) + ", " + "Height: " + userHeight + ", " + "Weight: " + userWeight + ", " + "Goal: " + userGoal ;	
 	}
 	
 	@Override

@@ -6,9 +6,8 @@ class newLinkedList<T> extends AbstractList {
 	private Node head;
 	private int listCount;
 
+	//makes list and null head to start making list from
 	public newLinkedList() {
-
-		// makes null head node to use to make list
 		head = new Node(null);
 		listCount = 0;
 	}
@@ -17,37 +16,30 @@ class newLinkedList<T> extends AbstractList {
 	public void addLast(T data) {
 		Node temp = new Node(data);
 		Node current = head;
-		// starting at the head node, crawl to the end of the list
 		while (current.getNext() != null) {
 			current = current.getNext();
 		}
-		// the last node's "next" reference set to our new node
 		current.setNext(temp);
 		listCount++;
 	}
 
+	
+	// inserts passed object at the specified position
 	public void add(T data, int index)
-	// inserts the specified element at the specified position in this list
 	{
 		Node temp = new Node(data);
 		Node current = head;
-		// crawl to the requested index or the last element in the list,
-		// whichever comes first
 		for (int i = 1; i < index && current.getNext() != null; i++) {
 			current = current.getNext();
 		}
-		// set the new node's next-node reference to this node's next-node
-		// reference
 		temp.setNext(current.getNext());
-		// now set this node's next-node reference to the new node
 		current.setNext(temp);
-		listCount++;// increment the number of elements variable
+		listCount++;
 	}
-
+	
+	// returns the element at that index
 	public T get(int index)
-	// returns the element at the specified position in this list.
 	{
-		// index must be 1 or higher
 		if (index <= 0)
 			return null;
 
@@ -61,14 +53,14 @@ class newLinkedList<T> extends AbstractList {
 		return current.getData();
 	}
 
+	//had to put this in to make it work as a List in java. 
 	public T remove(int index) {
 		throw new UnsupportedOperationException();
 	}
 
+	//my actual remove method!
 	public boolean myRemove(int index)
-	// removes the element at the specified position in this list.
 	{
-		// if the index is out of range, exit
 		if (index < 1 || index > size())
 			return false;
 
@@ -80,7 +72,7 @@ class newLinkedList<T> extends AbstractList {
 			current = current.getNext();
 		}
 		current.setNext(current.getNext().getNext());
-		listCount--; // decrement the number of elements variable
+		listCount--; 
 		return true;
 	}
 
@@ -91,8 +83,8 @@ class newLinkedList<T> extends AbstractList {
 		return (T) oldFirst.data;
 	}
 
+	// returns the number of objects
 	public int size()
-	// returns the number of elements in this list.
 	{
 		return listCount;
 	}
@@ -122,22 +114,19 @@ class newLinkedList<T> extends AbstractList {
 		return isEmpty();
 	}
 
+	//node class. In here with this because easier.
 	private class Node {
-		// reference to the next node in the chain,
-		// or null if there isn't one.
+
 		Node next;
-		// data carried by this node.
-		// could be of any type you need.
+
 		T data;
 
-		// Node constructor
 		public Node(T dataValue) {
 			next = null;
 			data = dataValue;
 		}
 
-		// another Node constructor if we want to
-		// specify the node to point to.
+
 		public Node(T dataValue, Node nextValue) {
 			next = nextValue;
 			data = dataValue;

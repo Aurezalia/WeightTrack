@@ -32,6 +32,4 @@ public interface Impl {
 	//because a new user can access this, the delta information (change in last two Records) is restricted only to larger file sizes
 	void calculatePressed();
 
-	//this method doesn't do anything yet. Eventually it will draw a graph... 
-	void chartPressed();
 }
